@@ -3,6 +3,13 @@ from . import schema
 from datetime import datetime, timedelta
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.post("/post")
 def ReqDelDate(data: schema.body):
     temp = []
