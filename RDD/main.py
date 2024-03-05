@@ -12,12 +12,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 @app.post("/post")
 def ReqDelDate(data: schema.body):
     temp = []
+    length= len(data.Order.OrderLine)
+    count=0
     for line in data.Order.OrderLine:
         response = {"OrderId": None, "PK": None, "OrderLine": temp }
-
         if line["IsGiftCard"] == 1 and line["IsRefundGiftCard"] == 1:
             response["OrderId"] = line["OrderId"]
             response["PK"]= data.Order.PK
@@ -34,7 +37,8 @@ def ReqDelDate(data: schema.body):
         elif line["IsRefundGiftCard"]==0  and line["IsGiftCard"] == 0:
             response["OrderId"]=line["OrderId"]
             response["PK"]=data.Order.PK
-            response.pop("OrderLine")
-        
+            count= count+1        
+    if length==count:
+        response.pop("OrderLine")         
     return response
 
